@@ -15,21 +15,50 @@ import * as THREE from 'three'
  * comes from how long the word is.
  */
 
-/** Bright enough to read against the dark stage, and never the damage red. */
+/**
+ * Mostly light, with a few deep ones for contrast.
+ *
+ * Light dominates because the stage is dark and a bright word carries further,
+ * but the darks earn their place: against a white outline they read as a
+ * different kind of shout rather than as a mistake.
+ */
 const COLOURS = [
-  '#ffd53d',
-  '#4ec9f5',
-  '#7dff9b',
-  '#ff8ad4',
-  '#c58bff',
-  '#ffa03d',
-  '#5ee0c0',
-  '#ff6b6b',
-  '#9dff3d',
+  '#ffe14d',
+  '#7fe0ff',
+  '#a8ff9e',
+  '#ffb3e6',
+  '#d4b3ff',
+  '#ffc46b',
+  '#8effd9',
+  '#ff9b9b',
+  '#e6ff7a',
   '#ffffff',
+  '#f5a0ff',
+  '#9fd0ff',
+  '#1f2a52',
+  '#4a1230',
+  '#0f3b2e',
 ]
 
 export const randomTauntColour = () => COLOURS[Math.floor(Math.random() * COLOURS.length)]
+
+/**
+ * Perceived brightness of a hex colour, 0..1.
+ *
+ * Weighted rather than a flat average because the eye is far more sensitive to
+ * green than to blue - by a straight mean, pure blue would count as mid-bright
+ * and get a black outline it disappears into.
+ */
+function brightness(hex: string) {
+  const n = parseInt(hex.slice(1), 16)
+  const r = (n >> 16) & 255
+  const g = (n >> 8) & 255
+  const b = n & 255
+  return (r * 0.299 + g * 0.587 + b * 0.114) / 255
+}
+
+/** Whichever of black or white the fill can actually be seen against. */
+const outlineFor = (hex: string) => (brightness(hex) > 0.55 ? '#000000' : '#ffffff')
 
 /** Past this it stops being a taunt and starts being a paragraph. */
 export const MAX_TAUNT = 28
@@ -40,9 +69,11 @@ const FONT_STACK =
 /**
  * Draws the word to a canvas.
  *
- * The outline is stroked before the fill and at a heavy width, so it sits
- * entirely behind the letterform instead of eating into it - that's what keeps
- * a thin bright colour legible against a bright background.
+ * One solid outline, picked to contrast with the fill: black behind a light
+ * word, white behind a dark one. Canvas strokes straddle the path - half the
+ * width falls inside the letterform - so it's stroked before the fill at twice
+ * the intended weight, leaving the fill to cover the inner half. Stroking
+ * after would eat into the letter and thin it out.
  */
 function makeLabel(text: string, colour: string) {
   const SIZE = 110
@@ -66,11 +97,8 @@ function makeLabel(text: string, colour: string) {
   const cx = canvas.width / 2
   const cy = canvas.height / 2
 
-  ctx.lineWidth = SIZE * 0.3
-  ctx.strokeStyle = '#0b0d13'
-  ctx.strokeText(text, cx, cy)
-  ctx.lineWidth = SIZE * 0.13
-  ctx.strokeStyle = '#ffffff'
+  ctx.lineWidth = SIZE * 0.26
+  ctx.strokeStyle = outlineFor(colour)
   ctx.strokeText(text, cx, cy)
 
   ctx.fillStyle = colour
