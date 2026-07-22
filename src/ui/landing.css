@@ -488,31 +488,25 @@
   color: var(--ink-2);
 }
 
+/* Ko-fi's own artwork, so it gets no styling of its own beyond a hover lift -
+   the brand on it isn't ours to restyle. Kept visually quieter than Start by
+   position and size rather than by colour, since the colour is theirs. */
 .kofi-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  padding: 11px 20px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 182, 72, 0.42);
-  background: rgba(255, 182, 72, 0.1);
-  color: var(--accent-warm);
-  font-size: 14px;
-  font-weight: 650;
-  text-decoration: none;
-  transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+  display: inline-block;
+  line-height: 0;
+  border-radius: 8px;
+  transition: transform var(--t-fast), filter var(--t-fast);
 }
 
-.kofi-btn svg {
-  font-size: 17px;
+.kofi-btn img {
+  display: block;
+  height: 36px;
+  width: auto;
 }
 
-/* Amber, not the accent: this is the one call to action on the page that
-   isn't Start, and it must never compete with it. */
 .kofi-btn:hover {
-  background: rgba(255, 182, 72, 0.18);
-  border-color: rgba(255, 182, 72, 0.65);
   transform: translateY(-1px);
+  filter: brightness(1.08);
 }
 
 @media (prefers-reduced-motion: reduce) {

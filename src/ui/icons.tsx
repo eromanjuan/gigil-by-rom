@@ -120,15 +120,6 @@ export const IconHeal = (p: IconProps) => (
   </Svg>
 )
 
-/** A cup, for the Ko-fi link. */
-export const IconCoffee = (p: IconProps) => (
-  <Svg {...p}>
-    <path d="M4.6 8.4h12.2v6.2a4.6 4.6 0 0 1-4.6 4.6H9.2a4.6 4.6 0 0 1-4.6-4.6z" />
-    <path d="M16.8 9.8h1.6a2.6 2.6 0 0 1 0 5.2h-1.6" />
-    <path d="M8 4.4v1.6M12 3.8v2.2" />
-  </Svg>
-)
-
 export const IconHome = (p: IconProps) => (
   <Svg {...p}>
     <path d="M4.2 10.4 12 4.2l7.8 6.2V19a1.2 1.2 0 0 1-1.2 1.2H5.4A1.2 1.2 0 0 1 4.2 19z" />

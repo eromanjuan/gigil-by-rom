@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { ATTACK_LIST } from '../game/attacks'
-import { IconCoffee, IconMark } from './icons'
+import { IconMark } from './icons'
 import LandingScene from './LandingScene'
 import './landing.css'
 
@@ -15,14 +15,16 @@ type Props = {
 }
 
 /**
- * Ko-fi, as a plain outbound link rather than their embedded widget.
+ * Ko-fi's own button, self-hosted.
  *
- * The widget is a third-party script that runs on every visit and can track
- * whoever loads it. Two paragraphs up this page promises the whole thing runs
- * on your own device and nothing is uploaded - so a donate button that quietly
- * makes that untrue is a bad trade for the convenience of a drop-in embed.
+ * Their snippet hotlinks the image from storage.ko-fi.com and their widget goes
+ * further and runs a third-party script. Two paragraphs up, this page promises
+ * the whole thing runs on your own device and nothing is uploaded - and every
+ * request to someone else's server hands them a visitor's IP and referrer.
+ * The button is 4KB; serving it ourselves keeps that promise literally true,
+ * costs nothing, and can't break when their CDN path changes.
  */
-const KOFI_URL = 'https://ko-fi.com/romanjuaneugenioi'
+const KOFI_URL = 'https://ko-fi.com/O8B623NRHI'
 
 const prefersReducedMotion = () =>
   typeof window.matchMedia === 'function' &&
@@ -321,14 +323,14 @@ export default function Landing({ onStart, behind = false }: Props) {
               Gigil is free, has no ads and never sees your photos. If it took the edge off a bad
               day, you can buy me a coffee — entirely optional, and nothing is gated behind it.
             </p>
-            <a
-              className="kofi-btn"
-              href={KOFI_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <IconCoffee />
-              <span>Support on Ko-fi</span>
+            <a className="kofi-btn" href={KOFI_URL} target="_blank" rel="noopener noreferrer">
+              <img
+                src="/kofi-button.png"
+                alt="Buy me a coffee at ko-fi.com"
+                width={141}
+                height={36}
+                loading="lazy"
+              />
             </a>
           </div>
 
