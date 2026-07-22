@@ -1,17 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <!--
-    Same mark as logo.svg but simplified for a 16px tab: the ears and the
-    grimace are dropped, the flush is enlarged, and the hair keeps only three
-    teeth. Detail that can't resolve at tab size isn't neutral - it averages
-    into grey and eats the silhouette.
+    Same mark as logo.svg, on a tile because a browser tab gives it nothing to
+    sit on. The ring is tightened and every stroke thickened: at 16px the
+    logo's proportions thin out to a smudge, and the silhouette has to survive
+    before the expression does.
   -->
   <rect width="64" height="64" rx="14" fill="#12141c"/>
-  <circle cx="32" cy="35" r="20" fill="#f0c9ad"/>
-  <path fill="#241c16"
-        d="M12 34.6A20 20 0 0 1 52 34.6L45.6 28.8 38.8 33.4 32 28.4 25.2 33.4 18.4 28.8Z"/>
-  <ellipse cx="19.4" cy="42.6" rx="6.4" ry="4.8" fill="#ff5d47" opacity="0.9"/>
-  <ellipse cx="44.6" cy="42.6" rx="6.4" ry="4.8" fill="#ff5d47" opacity="0.9"/>
-  <ellipse cx="32" cy="40.4" rx="4.6" ry="5" fill="#ff5d47"/>
-  <path d="M21.6 35.4q3.8 3.4 7.6 0M34.8 35.4q3.8 3.4 7.6 0"
-        stroke="#12141c" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+  <g fill="none" stroke="#ff5d47" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="21.6"/>
+    <path d="M19.8 25 29.2 30.6"/>
+    <path d="M44.2 25 34.8 30.6"/>
+    <path d="M22.2 44.8Q32 36.6 41.8 44.8"/>
+  </g>
+  <circle cx="23.8" cy="33.6" r="3.8" fill="#ff5d47"/>
+  <circle cx="40.2" cy="33.6" r="3.8" fill="#ff5d47"/>
 </svg>

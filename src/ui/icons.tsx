@@ -40,45 +40,34 @@ function Svg({ size = '1em', className, children }: IconProps & { children: Reac
 }
 
 /**
- * The brand mark: the game's own outcome — flushed cheeks, red nose, eyes
- * screwed shut. Filled rather than stroked, unlike everything else here,
- * because it has to match public/logo.svg exactly; a mark that differs between
- * the tab and the page reads as two different products.
+ * The brand mark: a face mid-scowl, matching public/logo.svg.
+ *
+ * Takes `currentColor` rather than hard-coding the accent, so the one place
+ * that decides the brand colour stays the stylesheet. Everything about it is
+ * carried by the brows - which is what lets the same drawing work as a 44px
+ * wordmark lockup and a 16px favicon.
  */
 export const IconMark = ({ size = '1em', className }: IconProps) => (
   <svg
     viewBox="0 0 64 64"
     width={size}
     height={size}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={3.6}
+    strokeLinecap="round"
+    strokeLinejoin="round"
     aria-hidden="true"
     focusable="false"
     className={className}
     style={{ display: 'block', overflow: 'visible' }}
   >
-    <circle cx="32" cy="35" r="20" fill="#f0c9ad" />
-    <ellipse cx="10.6" cy="36" rx="3" ry="4.3" fill="#e6b99c" />
-    <ellipse cx="53.4" cy="36" rx="3" ry="4.3" fill="#e6b99c" />
-    <path
-      fill="#241c16"
-      d="M12 34.6A20 20 0 0 1 52 34.6L45.6 28.8 38.8 33.4 32 28.4 25.2 33.4 18.4 28.8Z"
-    />
-    <ellipse cx="19.6" cy="42.6" rx="6" ry="4.5" fill="#ff5d47" opacity="0.9" />
-    <ellipse cx="44.4" cy="42.6" rx="6" ry="4.5" fill="#ff5d47" opacity="0.9" />
-    <ellipse cx="32" cy="40.4" rx="4.3" ry="4.7" fill="#ff5d47" />
-    <path
-      d="M21.6 35.4q3.8 3.4 7.6 0M34.8 35.4q3.8 3.4 7.6 0"
-      stroke="#12141c"
-      strokeWidth={2.6}
-      fill="none"
-      strokeLinecap="round"
-    />
-    <path
-      d="M26.4 48.6q5.6-3.4 11.2 0"
-      stroke="#12141c"
-      strokeWidth={2.2}
-      fill="none"
-      strokeLinecap="round"
-    />
+    <circle cx="32" cy="32" r="23.4" />
+    <path d="M18.6 24.2 29.4 30.4" />
+    <path d="M45.4 24.2 34.6 30.4" />
+    <path d="M21.4 45.6Q32 36.8 42.6 45.6" />
+    <circle cx="23.4" cy="33.4" r="3.5" fill="currentColor" stroke="none" />
+    <circle cx="40.6" cy="33.4" r="3.5" fill="currentColor" stroke="none" />
   </svg>
 )
 
