@@ -182,6 +182,19 @@
   color: var(--ink-3);
 }
 
+.lp-dl-note strong {
+  color: var(--ink-2);
+  font-weight: 650;
+}
+
+.lp-dl-note code {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
 .primary-btn {
   padding: 15px 34px;
   border: none;

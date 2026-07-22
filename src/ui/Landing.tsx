@@ -332,9 +332,14 @@ export default function Landing({ onStart, behind = false }: Props) {
             <button type="button" className="primary-btn lp-start" onClick={onStart} disabled={behind}>
               Start in browser
             </button>
+            {/* The release page, not the /latest/download/ asset link. That
+                link 302-redirects, and mobile and in-app browsers routinely
+                save the redirect page as gigil.apk.html instead of chasing it
+                to the binary. GitHub's release page downloads natively. */}
             <a
               className="ghost-cta"
-              href="https://github.com/eromanjuan/gigil-by-rom/releases/latest/download/gigil.apk"
+              href="https://github.com/eromanjuan/gigil-by-rom/releases/latest"
+              target="_blank"
               rel="noopener noreferrer"
             >
               <IconAndroid />
@@ -342,8 +347,10 @@ export default function Landing({ onStart, behind = false }: Props) {
             </a>
           </div>
           <p className="lp-dl-note" data-reveal>
-            The Android build is the same game in a standalone app. It's not from the Play Store, so
-            your phone will ask you to allow the install — that's expected for a direct download.
+            The Android build is the same game in a standalone app. Tap <strong>gigil.apk</strong> on
+            the page that opens, then let your phone install it — it isn't from the Play Store, so it
+            asks first. If you're in an app's built-in browser (Messenger, Instagram) and the file
+            saves as <code>.html</code>, open the page in Chrome instead.
           </p>
           <div className="lp-support" data-reveal>
             <p>
