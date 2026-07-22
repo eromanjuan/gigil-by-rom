@@ -8,6 +8,7 @@ import { CameraShake, ImpactFlash, Particles } from './fx'
 import { makeHand, type Hand, type HandKind } from './hands'
 import { loadHandPieces, makeModelHand } from './handModel'
 import { LM } from './landmarks'
+import { MAX_TAUNT, randomTauntColour, Taunts } from './taunt'
 import { buildDummyRig } from './dummy'
 import { defaultLook, type Look } from './look'
 
@@ -91,6 +92,7 @@ export class Game {
   /** Whether the current target is generated rather than reconstructed. */
   private onDummy = false
   private handRoot = new THREE.Group()
+  private taunts = new Taunts()
   private lights = {} as Record<LightId, THREE.DirectionalLight>
   private lightStates = {} as Record<LightId, LightState>
 
@@ -125,7 +127,7 @@ export class Game {
     this.shake = new CameraShake(this.camera)
 
     this.buildStage()
-    this.scene.add(this.handRoot, this.particles.points, this.flash.group)
+    this.scene.add(this.handRoot, this.particles.points, this.flash.group, this.taunts.group)
 
     this.resizeObserver = new ResizeObserver(() => this.resize())
     this.resizeObserver.observe(container)
@@ -258,6 +260,48 @@ export class Game {
     this.shake.rebase()
   }
 
+  /**
+   * A verbal attack: the player's own words, thrown at the head.
+   *
+   * Damage scales with length but flattens quickly - a long insult should be
+   * worth more than "oi" without turning the box into a damage exploit for
+   * whoever can paste the most text.
+   */
+  taunt(text: string) {
+    const trimmed = text.trim().slice(0, MAX_TAUNT)
+    if (!trimmed || !this.bust || !this.faceRig) return
+    void sfx.resume()
+
+    const at = this.pointOf('noseBridge')
+    const colour = randomTauntColour()
+    const power = THREE.MathUtils.clamp(0.35 + trimmed.length / 40, 0.35, 1)
+
+    this.taunts.spawn(trimmed, at, colour, () => {
+      // Words rock the head back rather than denting it: there is no contact
+      // point, so a directional dent would be inventing one.
+      this.rig.hit(
+        new THREE.Vector3((Math.random() - 0.5) * 0.5, 0.12, -0.85 * power),
+        new THREE.Vector3(-1.5 * power, (Math.random() - 0.5) * 1.6, 0),
+        -0.02,
+        0.5 * power,
+      )
+      this.shake.add(0.16 * power)
+      this.flash.spawn(at.clone().setZ(at.z + 0.25), 0.34 * power, colour)
+      this.particles.emit('star', at, new THREE.Vector3(0, 0.9, 1.1), 7, {
+        speed: 2.6,
+        spread: 1.4,
+        size: 0.03,
+        life: 0.7,
+      })
+      // Being spoken to like that flushes the face; it doesn't bruise it.
+      for (const name of ['cheekL', 'cheekR'] as const) {
+        const uv = this.uvOf(name)
+        this.bust?.bruises.mark('redness', uv.u, uv.v, 0.4 * power)
+      }
+      this.hit({ damage: 3 + 7 * power, power: 0.3 * power })
+    })
+  }
+
   /* --------------------------------------------------------------- target */
 
   /**
@@ -362,6 +406,7 @@ export class Game {
     this.rig.reset()
     this.particles.clear()
     this.flash.clear()
+    this.taunts.clear()
     if (this.bust) {
       this.scene.remove(this.bust.root)
       this.bust.dispose()
@@ -384,6 +429,7 @@ export class Game {
     this.rig.reset()
     this.particles.clear()
     this.flash.clear()
+    this.taunts.clear()
     this.shake.reset()
     this.bust.bruises.clear()
     this.field.heal()
@@ -618,6 +664,7 @@ export class Game {
     }
 
     this.particles.update(dt)
+    this.taunts.update(dt)
     this.flash.update(dt, this.camera)
     this.shake.update(dt)
 

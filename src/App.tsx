@@ -5,6 +5,7 @@ import { defaultLook, type Look } from './game/look'
 import Uploader from './ui/Uploader'
 import Hud from './ui/Hud'
 import HotkeyDock from './ui/HotkeyDock'
+import TauntBox from './ui/TauntBox'
 import LightPanel from './ui/LightPanel'
 import Landing from './ui/Landing'
 import Terms from './ui/Terms'
@@ -44,6 +45,7 @@ export default function App() {
   const [look, setLook] = useState<Look>(defaultLook)
   /** True when the photo step was reached from a game already in progress. */
   const [swapping, setSwapping] = useState(false)
+  const [tauntOpen, setTauntOpen] = useState(false)
   /**
    * Set only by the photo step. A customiser rebuild reports 'playing' too, and
    * one still in flight when the player moves on would otherwise start the game
@@ -211,9 +213,34 @@ export default function App() {
     setStage('playing')
   }, [])
 
-  // Keystrokes shouldn't land while anything is covering the stage.
+  const handleTaunt = useCallback((text: string) => gameRef.current?.taunt(text), [])
+  const handleTauntToggle = useCallback(() => setTauntOpen((v) => !v), [])
+
+  // T opens the box. It lives here rather than in Game's key handler because
+  // Game owns attacks, and this one is a piece of UI that happens to have a
+  // shortcut - Game has no business knowing an input exists.
   useEffect(() => {
-    if (gameRef.current) gameRef.current.inputEnabled = stage === 'playing'
+    if (stage !== 'playing' || tauntOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() !== 't' || e.metaKey || e.ctrlKey || e.altKey || e.repeat) return
+      const el = e.target as HTMLElement | null
+      if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)) return
+      e.preventDefault()
+      setTauntOpen(true)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [stage, tauntOpen])
+
+  // Keystrokes shouldn't land while anything is covering the stage - and while
+  // the taunt box is open the letters belong to the sentence, not the fists.
+  useEffect(() => {
+    if (gameRef.current) gameRef.current.inputEnabled = stage === 'playing' && !tauntOpen
+  }, [stage, tauntOpen])
+
+  // A taunt box left open over the uploader would eat its typing.
+  useEffect(() => {
+    if (stage !== 'playing') setTauntOpen(false)
   }, [stage])
 
   return (
@@ -245,7 +272,16 @@ export default function App() {
             />
           )}
 
-          <HotkeyDock onTrigger={handleTrigger} onRelease={handleRelease} />
+          {tauntOpen && (
+            <TauntBox onSend={handleTaunt} onClose={() => setTauntOpen(false)} />
+          )}
+
+          <HotkeyDock
+            onTrigger={handleTrigger}
+            onRelease={handleRelease}
+            onTaunt={handleTauntToggle}
+            tauntOpen={tauntOpen}
+          />
         </>
       )}
 

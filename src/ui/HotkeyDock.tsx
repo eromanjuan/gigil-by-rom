@@ -4,6 +4,9 @@ import { ATTACK_LIST, type AttackId } from '../game/attacks'
 type Props = {
   onTrigger: (id: AttackId) => void
   onRelease: (id: AttackId) => void
+  /** Opens the verbal attack box. */
+  onTaunt: () => void
+  tauntOpen: boolean
 }
 
 const BY_KEY = new Map<string, AttackId>(ATTACK_LIST.map((a) => [a.key.toLowerCase(), a.id]))
@@ -24,7 +27,7 @@ function isTypingTarget(target: EventTarget | null): boolean {
  * pointer input drives the game, which is what makes touch and hold-to-choke
  * work.
  */
-export default function HotkeyDock({ onTrigger, onRelease }: Props) {
+export default function HotkeyDock({ onTrigger, onRelease, onTaunt, tauntOpen }: Props) {
   const [pressed, setPressed] = useState<ReadonlySet<AttackId>>(() => new Set())
 
   const press = (id: AttackId) =>
@@ -99,6 +102,23 @@ export default function HotkeyDock({ onTrigger, onRelease }: Props) {
             <span className="cap-label">{attack.label}</span>
           </button>
         ))}
+
+        <span className="dock-sep" aria-hidden />
+
+        {/* Separated from the seven, because it isn't one of them: it opens an
+            input rather than swinging anything, and it's the only control here
+            that takes an argument. */}
+        <button
+          type="button"
+          className={`keycap keycap-taunt${tauntOpen ? ' is-pressed' : ''}`}
+          title="Say something (T)"
+          aria-label="Verbal attack. Opens a box to type what to say."
+          aria-expanded={tauntOpen}
+          onClick={onTaunt}
+        >
+          <kbd>T</kbd>
+          <span className="cap-label">Say It</span>
+        </button>
       </div>
     </div>
   )

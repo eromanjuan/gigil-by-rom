@@ -1,0 +1,106 @@
+/* ==========================================================================
+   Verbal attack - the typed-word input and its keycap.
+
+   Its own file rather than landing.css, where this was first written by
+   mistake: it is in-game UI, and the landing sheet is only pulled in by the
+   landing page. Imported from main.tsx so the dock separator is styled
+   whether or not the box has ever been opened.
+   ========================================================================== */
+/* Docked directly above the keycaps rather than centred, so it never covers
+   the face it's aimed at - the word landing is the feedback. */
+.taunt-wrap {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(var(--dock-h) + 18px + env(safe-area-inset-bottom, 0px));
+  z-index: 12;
+  width: min(440px, calc(100vw - 28px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+.taunt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 7px 7px 14px;
+  border-radius: 999px;
+}
+
+.taunt-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.taunt-input::placeholder {
+  color: var(--ink-3);
+  font-weight: 500;
+}
+
+.taunt-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.taunt-send {
+  flex: 0 0 auto;
+  padding: 9px 18px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent), #e0402c);
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 700;
+  transition: filter var(--t-fast), opacity var(--t-fast);
+}
+
+.taunt-send:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.taunt-send:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
+.taunt-hint {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+
+/* Sets the verbal attack apart from the seven physical ones. */
+.dock-sep {
+  width: 1px;
+  align-self: stretch;
+  margin: 6px 3px;
+  background: var(--edge);
+}
+
+.keycap-taunt kbd {
+  background: linear-gradient(180deg, rgba(255, 182, 72, 0.3), rgba(255, 182, 72, 0.1));
+  border-color: rgba(255, 182, 72, 0.5);
+}
+
+@media (max-width: 760px) {
+  .taunt-wrap {
+    bottom: calc(var(--dock-h) + 12px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .taunt-hint {
+    display: none;
+  }
+}
+
