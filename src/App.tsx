@@ -175,6 +175,20 @@ export default function App() {
   const handleCustomise = useCallback(() => setStage('customise'), [])
 
   /**
+   * Back to the start.
+   *
+   * `hasBust` is cleared as well as the stage, because it's what tells the
+   * later screens there's a game to return to - leaving it set would make Back
+   * from the customiser drop into a session the player already walked away
+   * from. The bust itself is left standing; whatever is built next replaces it.
+   */
+  const handleHome = useCallback(() => {
+    setLook(defaultLook())
+    setHasBust(false)
+    setStage('landing')
+  }, [])
+
+  /**
    * Leaving the build panel.
    *
    * Where "back" goes depends on how you got here. During onboarding it's the
@@ -216,6 +230,7 @@ export default function App() {
             lightsOpen={lightsOpen}
             onReset={handleReset}
             onCustomise={handleCustomise}
+            onHome={handleHome}
             onNewPhoto={handleNewPhoto}
             onToggleMute={handleToggleMute}
             onToggleLights={handleToggleLights}

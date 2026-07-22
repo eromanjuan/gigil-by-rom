@@ -1,5 +1,5 @@
 import type { GameStats } from '../game/Game'
-import { IconHeal, IconLight, IconPhoto, IconSound, IconSoundOff, IconTune } from './icons'
+import { IconHeal, IconHome, IconLight, IconPhoto, IconSound, IconSoundOff, IconTune } from './icons'
 
 type Props = {
   stats: GameStats
@@ -8,6 +8,7 @@ type Props = {
   onReset: () => void
   onCustomise: () => void
   onNewPhoto: () => void
+  onHome: () => void
   onToggleMute: () => void
   onToggleLights: () => void
 }
@@ -24,6 +25,7 @@ export default function Hud({
   onReset,
   onCustomise,
   onNewPhoto,
+  onHome,
   onToggleMute,
   onToggleLights,
 }: Props) {
@@ -100,6 +102,18 @@ export default function Hud({
               <IconLight />
             </span>
             <span className="txt">Lighting</span>
+          </button>
+
+          <button
+            type="button"
+            className="tool"
+            onClick={onHome}
+            aria-label="Back to the start"
+            title="Back to the start"
+          >
+            <span className="ico" aria-hidden>
+              <IconHome />
+            </span>
           </button>
 
           <span className="tool-sep" aria-hidden />

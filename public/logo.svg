@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Gigil">
+  <!--
+    The mark is the game's own outcome: a face with slapped cheeks and a red
+    nose, eyes screwed shut. Drawn as flat shapes with no gradients or strokes
+    under 1.5px so it still reads at 16px in a browser tab, where anything
+    finer turns to grey mush.
+
+    The zigzag along the hairline is the spiky preset - it gives the silhouette
+    something to hold onto once the facial detail stops resolving.
+  -->
+  <rect width="64" height="64" rx="15" fill="#12141c"/>
+
+  <!-- head -->
+  <circle cx="32" cy="35" r="19" fill="#f0c9ad"/>
+
+  <!-- ears -->
+  <ellipse cx="12.6" cy="36" rx="2.9" ry="4.1" fill="#e6b99c"/>
+  <ellipse cx="51.4" cy="36" rx="2.9" ry="4.1" fill="#e6b99c"/>
+
+  <!-- hair, closed with a jagged edge rather than a clean arc -->
+  <path fill="#241c16"
+        d="M13.1 34.4A18.9 18.9 0 0 1 50.9 34.4L46.6 29.6 42.2 33.1 37.4 28.6 32 32.2 26.6 28.6 21.8 33.1 17.4 29.6Z"/>
+
+  <!-- flush: cheeks and nose, the whole point of the mark -->
+  <ellipse cx="20.6" cy="42.4" rx="5.6" ry="4.2" fill="#ff5d47" opacity="0.88"/>
+  <ellipse cx="43.4" cy="42.4" rx="5.6" ry="4.2" fill="#ff5d47" opacity="0.88"/>
+  <ellipse cx="32" cy="40.6" rx="4" ry="4.4" fill="#ff5d47"/>
+
+  <!-- eyes, screwed shut -->
+  <path d="M21.8 35.4q3.6 3.2 7.2 0M35 35.4q3.6 3.2 7.2 0"
+        stroke="#12141c" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+
+  <!-- a grimace, not a smile -->
+  <path d="M26.4 48.6q5.6-3.4 11.2 0" stroke="#12141c" stroke-width="2.2"
+        fill="none" stroke-linecap="round"/>
+</svg>

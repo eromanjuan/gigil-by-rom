@@ -1,8 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!--
+    Same mark as logo.svg but simplified for a 16px tab: the ears and the
+    grimace are dropped, the flush is enlarged, and the hair keeps only three
+    teeth. Detail that can't resolve at tab size isn't neutral - it averages
+    into grey and eats the silhouette.
+  -->
   <rect width="64" height="64" rx="14" fill="#12141c"/>
-  <circle cx="27" cy="30" r="15" fill="#e8b391"/>
-  <circle cx="22" cy="27" r="2.4" fill="#12141c"/>
-  <circle cx="32" cy="27" r="2.4" fill="#12141c"/>
-  <path d="M20 37c4 4 10 4 14 0" stroke="#12141c" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-  <path d="M56 22c-8 0-13 4-13 10s5 10 13 10z" fill="#ff5d47"/>
+  <circle cx="32" cy="35" r="20" fill="#f0c9ad"/>
+  <path fill="#241c16"
+        d="M12 34.6A20 20 0 0 1 52 34.6L45.6 28.8 38.8 33.4 32 28.4 25.2 33.4 18.4 28.8Z"/>
+  <ellipse cx="19.4" cy="42.6" rx="6.4" ry="4.8" fill="#ff5d47" opacity="0.9"/>
+  <ellipse cx="44.6" cy="42.6" rx="6.4" ry="4.8" fill="#ff5d47" opacity="0.9"/>
+  <ellipse cx="32" cy="40.4" rx="4.6" ry="5" fill="#ff5d47"/>
+  <path d="M21.6 35.4q3.8 3.4 7.6 0M34.8 35.4q3.8 3.4 7.6 0"
+        stroke="#12141c" stroke-width="2.8" fill="none" stroke-linecap="round"/>
 </svg>

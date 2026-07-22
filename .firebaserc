@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "default": "gigil-app"
+  },
+  "targets": {
+    "gigil-app": {
+      "hosting": {
+        "gigil": ["gigil"]
+      }
+    }
+  }
+}
