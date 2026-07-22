@@ -471,6 +471,56 @@
   justify-content: center;
 }
 
+/* Sits after the final Start, never before it. The point of the page is to get
+   someone to the thing that helps; asking for money on the way there would be
+   charging admission to a stress toy. */
+.lp-support {
+  margin-top: 46px;
+  padding-top: 26px;
+  border-top: 1px solid var(--edge);
+}
+
+.lp-support p {
+  margin: 0 0 16px;
+  max-width: 48ch;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.kofi-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 182, 72, 0.42);
+  background: rgba(255, 182, 72, 0.1);
+  color: var(--accent-warm);
+  font-size: 14px;
+  font-weight: 650;
+  text-decoration: none;
+  transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+}
+
+.kofi-btn svg {
+  font-size: 17px;
+}
+
+/* Amber, not the accent: this is the one call to action on the page that
+   isn't Start, and it must never compete with it. */
+.kofi-btn:hover {
+  background: rgba(255, 182, 72, 0.18);
+  border-color: rgba(255, 182, 72, 0.65);
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kofi-btn {
+    transition: none;
+  }
+}
+
 .lp-foot {
   margin: 40px 0 0;
   max-width: 46ch;

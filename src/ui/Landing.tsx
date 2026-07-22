@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { ATTACK_LIST } from '../game/attacks'
-import { IconMark } from './icons'
+import { IconCoffee, IconMark } from './icons'
 import LandingScene from './LandingScene'
 import './landing.css'
 
@@ -13,6 +13,16 @@ type Props = {
    */
   behind?: boolean
 }
+
+/**
+ * Ko-fi, as a plain outbound link rather than their embedded widget.
+ *
+ * The widget is a third-party script that runs on every visit and can track
+ * whoever loads it. Two paragraphs up this page promises the whole thing runs
+ * on your own device and nothing is uploaded - so a donate button that quietly
+ * makes that untrue is a bad trade for the convenience of a drop-in embed.
+ */
+const KOFI_URL = 'https://ko-fi.com/romanjuaneugenioi'
 
 const prefersReducedMotion = () =>
   typeof window.matchMedia === 'function' &&
@@ -306,6 +316,22 @@ export default function Landing({ onStart, behind = false }: Props) {
               Start
             </button>
           </div>
+          <div className="lp-support" data-reveal>
+            <p>
+              Gigil is free, has no ads and never sees your photos. If it took the edge off a bad
+              day, you can buy me a coffee — entirely optional, and nothing is gated behind it.
+            </p>
+            <a
+              className="kofi-btn"
+              href={KOFI_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <IconCoffee />
+              <span>Support on Ko-fi</span>
+            </a>
+          </div>
+
           <p className="lp-foot">
             Runs entirely on this device. No account, no upload, no leaderboard of people you're mad
             at.
