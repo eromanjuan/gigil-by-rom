@@ -1,0 +1,15 @@
+node_modules/
+dist/
+
+# Fetched by scripts/fetch-assets.mjs on install, not worth committing.
+public/wasm/
+public/models/face_landmarker.task
+
+# Third-party photoscan, licensed for use rather than redistribution. The app
+# falls back to the procedural hand rig when it isn't present, so a fresh clone
+# still runs - drop the file in locally to get the scanned hands back.
+public/models/hands/
+
+*.local
+.DS_Store
+.vscode/

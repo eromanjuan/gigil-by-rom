@@ -1,0 +1,541 @@
+/* ==========================================================================
+   Landing — the pitch, told as a scroll.
+
+   Its own file rather than more of styles.css: that sheet is the in-game UI
+   system, and this is a marketing page that happens to live in the same app.
+   It reuses the same custom properties, so the two can't drift apart.
+
+   The landing owns its own scroll container. The app shell pins the body at
+   `overflow: hidden` and every other stage relies on that, so this scrolls
+   inside itself rather than unpinning the whole game.
+   ========================================================================== */
+
+.lp {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+
+/* The terms dialog opens on top rather than replacing this, so everything
+   underneath has to stop being reachable — otherwise Start is still tabbable
+   through the modal. */
+.lp.is-behind {
+  overflow: hidden;
+}
+
+.lp.is-behind .lp-main {
+  filter: blur(2px);
+  opacity: 0.4;
+}
+
+.lp-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keeps body copy legible over whatever the scene is doing behind it. */
+.lp-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 93, 71, 0.1), transparent 55%),
+    linear-gradient(180deg, rgba(11, 13, 19, 0.42) 0%, rgba(11, 13, 19, 0.78) 100%);
+}
+
+.lp-main {
+  position: relative;
+  z-index: 2;
+  width: min(760px, 100%);
+  margin: 0 auto;
+  padding: 0 22px 96px;
+}
+
+.lp-sec {
+  padding: 13vh 0;
+}
+
+/* --- hero ---------------------------------------------------------------- */
+
+.lp-hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 8vh;
+}
+
+.lp-eyebrow {
+  margin: 0 0 20px;
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.lp-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.lp-mark {
+  display: grid;
+  place-items: center;
+  font-size: 44px;
+  color: var(--accent);
+  filter: drop-shadow(0 6px 20px rgba(255, 93, 71, 0.5));
+}
+
+.lp-brand h1 {
+  margin: 0;
+  font-size: clamp(44px, 9vw, 82px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+.lp-brand h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.lp-lead {
+  margin: 0 0 20px;
+  font-size: clamp(23px, 4.4vw, 40px);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  max-width: 18ch;
+}
+
+/* A drawn underline rather than text-decoration, so it clears the descenders
+   instead of striking through them. */
+.lp-lead em {
+  font-style: normal;
+  color: var(--accent);
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 100% 3px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 2px;
+}
+
+.lp-sub {
+  margin: 0 0 34px;
+  max-width: 46ch;
+  font-size: 15.5px;
+  line-height: 1.66;
+  color: var(--ink-2);
+}
+
+.lp-cta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.lp-cta-note {
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.primary-btn {
+  padding: 15px 34px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent), #e0402c);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 10px 30px rgba(255, 93, 71, 0.36);
+  transition: transform var(--t-fast), box-shadow var(--t-fast), filter var(--t-fast);
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 38px rgba(255, 93, 71, 0.46);
+  filter: brightness(1.06);
+}
+
+.primary-btn:active {
+  transform: translateY(1px);
+}
+
+.primary-btn:disabled {
+  opacity: 0.5;
+  box-shadow: none;
+  cursor: default;
+  transform: none;
+}
+
+.lp-scroll {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 52px 0 0;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.lp-scroll svg {
+  animation: lp-nudge 1.9s ease-in-out infinite;
+}
+
+@keyframes lp-nudge {
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+/* --- the pinned Start ---------------------------------------------------- */
+
+/* The hero's button scrolls away and never comes back, so a second one docks
+   once it leaves. */
+.lp-pin {
+  position: fixed;
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  right: 20px;
+  z-index: 4;
+  opacity: 0;
+  transform: translateY(-14px);
+  pointer-events: none;
+  transition: opacity var(--t-med), transform var(--t-med);
+}
+
+.lp-pin.is-on {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.lp-pin-btn {
+  padding: 11px 26px;
+  font-size: 14px;
+}
+
+/* --- section furniture --------------------------------------------------- */
+
+.lp-kicker {
+  margin: 0 0 12px;
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.lp-h2 {
+  margin: 0 0 16px;
+  font-size: clamp(30px, 5.4vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.028em;
+  line-height: 1.06;
+}
+
+.lp-h2-big {
+  font-size: clamp(38px, 8vw, 72px);
+}
+
+/* The safety section is the one place that shouldn't shout. */
+.lp-h2-plain {
+  font-size: clamp(25px, 4vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.lp-pron {
+  margin: 0 0 18px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.lp-body {
+  margin: 0 0 18px;
+  max-width: 52ch;
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+.lp-quote {
+  margin: 30px 0 0;
+  padding-left: 20px;
+  border-left: 3px solid var(--accent);
+  max-width: 40ch;
+  font-size: clamp(18px, 2.8vw, 25px);
+  font-weight: 650;
+  line-height: 1.36;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+/* --- steps --------------------------------------------------------------- */
+
+.lp-steps {
+  list-style: none;
+  margin: 30px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.lp-step {
+  display: flex;
+  gap: 16px;
+  padding: 20px 22px;
+  border-radius: var(--r-lg);
+}
+
+.lp-step-n {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  border: 1px solid rgba(255, 93, 71, 0.4);
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-step h3 {
+  margin: 4px 0 6px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.012em;
+}
+
+.lp-step p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.lp-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.key-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px 5px 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--edge);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.key-chip kbd {
+  display: grid;
+  place-items: center;
+  width: 21px;
+  height: 21px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--edge-strong);
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* --- moves --------------------------------------------------------------- */
+
+.lp-moves {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+  gap: 10px;
+}
+
+.lp-move {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 15px 17px;
+  border-radius: var(--r-md);
+  transition: border-color var(--t-fast), transform var(--t-fast);
+}
+
+.lp-move:hover {
+  border-color: rgba(255, 93, 71, 0.45);
+  transform: translateY(-2px);
+}
+
+.lp-move kbd {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--edge-strong);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.lp-move strong {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.lp-move span {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+/* --- notice -------------------------------------------------------------- */
+
+/* Amber rather than the accent red: this is the one block that has to read as
+   information rather than as more of the pitch. */
+.lp-notice {
+  margin-top: 22px;
+  padding: 22px 24px;
+  border-radius: var(--r-lg);
+  background: rgba(255, 182, 72, 0.06);
+  border: 1px solid rgba(255, 182, 72, 0.28);
+}
+
+.lp-notice ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 15px;
+}
+
+.lp-notice li {
+  position: relative;
+  padding-left: 17px;
+  font-size: 14.5px;
+  line-height: 1.62;
+  color: var(--ink-2);
+}
+
+.lp-notice li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-warm);
+}
+
+.lp-notice strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* --- final --------------------------------------------------------------- */
+
+.lp-final {
+  min-height: 78svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.lp-foot {
+  margin: 40px 0 0;
+  max-width: 46ch;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+/* --- reveal -------------------------------------------------------------- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.55s cubic-bezier(0.2, 0.8, 0.3, 1),
+    transform 0.55s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 760px) {
+  .lp-main {
+    padding: 0 18px 72px;
+  }
+
+  .lp-sec {
+    padding: 9vh 0;
+  }
+
+  .lp-pin {
+    right: 14px;
+  }
+
+  .lp-step {
+    padding: 17px 18px;
+  }
+
+  .lp-notice {
+    padding: 18px;
+  }
+}
+
+/* The reveal is a nicety and the scroll cue is a loop that never stops, so
+   both go. The finished state is applied up front instead. */
+@media (prefers-reduced-motion: reduce) {
+  .lp {
+    scroll-behavior: auto;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .lp-scroll svg {
+    animation: none;
+  }
+
+  .primary-btn,
+  .lp-move,
+  .lp-pin {
+    transition: none;
+  }
+}
