@@ -10,6 +10,10 @@ public/models/face_landmarker.task
 # still runs - drop the file in locally to get the scanned hands back.
 public/models/hands/
 
+# Deploy bookkeeping written by the Firebase CLI, not source.
+.firebase/
+firebase-debug.log
+
 *.local
 .DS_Store
 .vscode/
