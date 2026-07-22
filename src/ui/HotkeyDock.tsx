@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ATTACK_LIST, type AttackId } from '../game/attacks'
+import { ATTACK_ICONS, IconSay } from './icons'
 
 type Props = {
   onTrigger: (id: AttackId) => void
@@ -98,8 +99,11 @@ export default function HotkeyDock({ onTrigger, onRelease, onTaunt, tauntOpen }:
               onRelease(attack.id)
             }}
           >
-            <kbd>{attack.key}</kbd>
+            <span className="cap-ico" aria-hidden>
+              {ATTACK_ICONS[attack.id]?.({})}
+            </span>
             <span className="cap-label">{attack.label}</span>
+            <kbd>{attack.key}</kbd>
           </button>
         ))}
 
@@ -116,8 +120,11 @@ export default function HotkeyDock({ onTrigger, onRelease, onTaunt, tauntOpen }:
           aria-expanded={tauntOpen}
           onClick={onTaunt}
         >
-          <kbd>T</kbd>
+          <span className="cap-ico" aria-hidden>
+            <IconSay />
+          </span>
           <span className="cap-label">Say It</span>
+          <kbd>T</kbd>
         </button>
       </div>
     </div>

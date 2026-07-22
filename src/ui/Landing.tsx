@@ -30,6 +30,21 @@ const prefersReducedMotion = () =>
   typeof window.matchMedia === 'function' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+/** Landing-only, like IconDown - the app icon set has no platform glyphs. */
+const IconAndroid = () => (
+  <svg
+    viewBox="0 0 24 24"
+    width="1.15em"
+    height="1.15em"
+    fill="currentColor"
+    aria-hidden="true"
+    focusable="false"
+    style={{ display: 'block' }}
+  >
+    <path d="M6 9.6h12v7.2a1.2 1.2 0 0 1-1.2 1.2h-.6v2.1a1.05 1.05 0 0 1-2.1 0v-2.1h-2.1v2.1a1.05 1.05 0 0 1-2.1 0v-2.1h-.6A1.2 1.2 0 0 1 6 16.8zM3.9 9.9a1.05 1.05 0 0 1 2.1 0v4.8a1.05 1.05 0 0 1-2.1 0zm14.1 0a1.05 1.05 0 0 1 2.1 0v4.8a1.05 1.05 0 0 1-2.1 0zM7.8 8.4a4.2 4.2 0 0 1 8.4 0zm1.5-3.3-.9-1.35a.35.35 0 0 1 .58-.4l.95 1.43a5 5 0 0 1 4.14 0l.95-1.43a.35.35 0 0 1 .58.4l-.9 1.35M9.9 6.6h.02M14.08 6.6h.02" />
+  </svg>
+)
+
 /** Local because icons.tsx is the shared set and this arrow is landing-only. */
 const IconDown = () => (
   <svg
@@ -315,9 +330,21 @@ export default function Landing({ onStart, behind = false }: Props) {
           </p>
           <div className="lp-cta" data-reveal>
             <button type="button" className="primary-btn lp-start" onClick={onStart} disabled={behind}>
-              Start
+              Start in browser
             </button>
+            <a
+              className="ghost-cta"
+              href="https://github.com/eromanjuan/gigil-by-rom/releases/latest/download/gigil.apk"
+              rel="noopener noreferrer"
+            >
+              <IconAndroid />
+              <span>Download for Android</span>
+            </a>
           </div>
+          <p className="lp-dl-note" data-reveal>
+            The Android build is the same game in a standalone app. It's not from the Play Store, so
+            your phone will ask you to allow the install — that's expected for a direct download.
+          </p>
           <div className="lp-support" data-reveal>
             <p>
               Gigil is free, has no ads and never sees your photos. If it took the edge off a bad

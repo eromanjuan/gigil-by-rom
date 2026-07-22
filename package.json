@@ -8,9 +8,14 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "setup:assets": "node scripts/fetch-assets.mjs",
+    "icons": "node scripts/make-icons.mjs",
+    "build:apk": "node scripts/build-apk.mjs",
     "postinstall": "node scripts/fetch-assets.mjs"
   },
   "dependencies": {
+    "@capacitor/android": "^7.6.8",
+    "@capacitor/cli": "^7.6.8",
+    "@capacitor/core": "^7.6.8",
     "@mediapipe/tasks-vision": "^0.10.18",
     "delaunator": "^5.0.1",
     "react": "^18.3.1",

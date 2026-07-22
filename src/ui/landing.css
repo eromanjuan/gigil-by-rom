@@ -151,6 +151,37 @@
   color: var(--ink-3);
 }
 
+/* The secondary action next to Start: same height, but outlined rather than
+   filled so the browser CTA stays the obvious default. */
+.ghost-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 14px 26px;
+  border-radius: 999px;
+  border: 1px solid var(--edge-strong);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 650;
+  text-decoration: none;
+  transition: border-color var(--t-fast), background var(--t-fast), transform var(--t-fast);
+}
+
+.ghost-cta:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+.lp-dl-note {
+  margin: 14px 0 0;
+  max-width: 46ch;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
 .primary-btn {
   padding: 15px 34px;
   border: none;

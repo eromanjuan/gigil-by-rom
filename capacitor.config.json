@@ -1,0 +1,11 @@
+{
+  "appId": "app.gigil.game",
+  "appName": "Gigil",
+  "webDir": "dist",
+  "android": {
+    "allowMixedContent": false
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

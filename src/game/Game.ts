@@ -9,6 +9,7 @@ import { makeHand, type Hand, type HandKind } from './hands'
 import { loadHandPieces, makeModelHand } from './handModel'
 import { LM } from './landmarks'
 import { MAX_TAUNT, randomTauntColour, Taunts } from './taunt'
+import { attachGestures } from './gestures'
 import { buildDummyRig } from './dummy'
 import { defaultLook, type Look } from './look'
 
@@ -93,6 +94,7 @@ export class Game {
   private onDummy = false
   private handRoot = new THREE.Group()
   private taunts = new Taunts()
+  private detachGestures: () => void = () => {}
   private lights = {} as Record<LightId, THREE.DirectionalLight>
   private lightStates = {} as Record<LightId, LightState>
 
@@ -136,6 +138,14 @@ export class Game {
     window.addEventListener('keydown', this.onKeyDown)
     window.addEventListener('keyup', this.onKeyUp)
     window.addEventListener('blur', this.releaseAll)
+
+    // Touch goes straight on the canvas. `inputEnabled` gates it for the same
+    // reason it gates the keys: an overlay is up and the stage is not in play.
+    this.detachGestures = attachGestures(this.renderer.domElement, {
+      screenOf: (name) => (this.inputEnabled ? this.screenOf(name) : null),
+      trigger: (id) => this.inputEnabled && this.trigger(id),
+      release: (id) => this.release(id),
+    })
 
     this.renderer.setAnimationLoop(this.tick)
     this.events.onStatus('empty')
@@ -528,6 +538,27 @@ export class Game {
   }
 
   private scratch = new THREE.Vector3()
+  private project = new THREE.Vector3()
+
+  /**
+   * Where a named target currently is on screen, in CSS pixels.
+   *
+   * Taken through the head's world matrix rather than from the rest pose,
+   * because the head is recoiling constantly - aiming a poke at where the eye
+   * was before the last punch would miss by half a face.
+   */
+  private screenOf = (name: TargetName) => {
+    if (!this.bust) return null
+    this.bust.head.updateWorldMatrix(true, false)
+    this.project.copy(this.pointOf(name)).applyMatrix4(this.bust.head.matrixWorld)
+    this.project.project(this.camera)
+    if (this.project.z > 1) return null
+    const rect = this.renderer.domElement.getBoundingClientRect()
+    return {
+      x: ((this.project.x + 1) / 2) * rect.width,
+      y: ((1 - this.project.y) / 2) * rect.height,
+    }
+  }
 
   /**
    * Resolves a named target against the current head.
@@ -681,6 +712,7 @@ export class Game {
     window.removeEventListener('keydown', this.onKeyDown)
     window.removeEventListener('keyup', this.onKeyUp)
     window.removeEventListener('blur', this.releaseAll)
+    this.detachGestures()
     this.resizeObserver.disconnect()
     this.teardownBust()
     this.renderer.dispose()

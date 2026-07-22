@@ -14,6 +14,16 @@ public/models/hands/
 .firebase/
 firebase-debug.log
 
+# Built by `npm run build:apk`, 22MB, rebuilt from source - deployed via dist,
+# never committed. The Gradle project and its build outputs are generated too.
+public/gigil.apk
+android/.gradle/
+android/build/
+android/app/build/
+android/capacitor-cordova-android-plugins/
+android/.idea/
+android/local.properties
+
 *.local
 .DS_Store
 .vscode/

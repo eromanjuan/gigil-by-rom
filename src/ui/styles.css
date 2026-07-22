@@ -1083,6 +1083,23 @@ input[type='color']::-webkit-color-swatch {
     display: none;
   }
 
+  /* Six tools at a 44px touch target is ~300px, and the rail is capped at
+     52vw - 203px on a 390px phone. It has to be allowed to wrap onto a second
+     row or the last buttons are simply unreachable. */
+  .tools {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    max-width: 100%;
+  }
+
+  .rail-right {
+    max-width: 44vw;
+  }
+
+  .tool-sep {
+    display: none;
+  }
+
   .tool {
     min-width: 44px;
     min-height: 44px;

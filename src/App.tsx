@@ -6,6 +6,7 @@ import Uploader from './ui/Uploader'
 import Hud from './ui/Hud'
 import HotkeyDock from './ui/HotkeyDock'
 import TauntBox from './ui/TauntBox'
+import GestureGuide from './ui/GestureGuide'
 import LightPanel from './ui/LightPanel'
 import Landing from './ui/Landing'
 import Terms from './ui/Terms'
@@ -275,6 +276,8 @@ export default function App() {
           {tauntOpen && (
             <TauntBox onSend={handleTaunt} onClose={() => setTauntOpen(false)} />
           )}
+
+          <GestureGuide />
 
           <HotkeyDock
             onTrigger={handleTrigger}
