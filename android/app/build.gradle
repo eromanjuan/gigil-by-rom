@@ -1,5 +1,14 @@
 apply plugin: 'com.android.application'
 
+// The signing credentials live in keystore.properties, which is gitignored.
+// Without it - a fresh clone, or CI - the release build falls back to unsigned
+// rather than failing, so the web build and the debug APK still work.
+def keystorePropsFile = rootProject.file("keystore.properties")
+def keystoreProps = new Properties()
+if (keystorePropsFile.exists()) {
+    keystoreProps.load(new FileInputStream(keystorePropsFile))
+}
+
 android {
     namespace "app.gigil.game"
     compileSdk rootProject.ext.compileSdkVersion
@@ -17,22 +26,25 @@ android {
         }
     }
     signingConfigs {
-        // A self-signed key checked into the repo. Fine for a downloadable
-        // debug-grade release of a toy that never touches a store or a user
-        // account; a Play Store upload would want a key kept out of version
-        // control, which is a later problem.
+        // The private upload key, read from the gitignored keystore.properties.
         release {
-            storeFile file('../gigil-release.keystore')
-            storePassword 'gigil-release'
-            keyAlias 'gigil'
-            keyPassword 'gigil-release'
+            if (keystorePropsFile.exists()) {
+                storeFile rootProject.file(keystoreProps['storeFile'])
+                storePassword keystoreProps['storePassword']
+                keyAlias keystoreProps['keyAlias']
+                keyPassword keystoreProps['keyPassword']
+            }
         }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            // Signed only when the key is present; an unsigned release is fine
+            // for anyone who just wants the web build from a clean checkout.
+            if (keystorePropsFile.exists()) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }

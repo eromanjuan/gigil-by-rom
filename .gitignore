@@ -24,6 +24,16 @@ android/capacitor-cordova-android-plugins/
 android/.idea/
 android/local.properties
 
+# Play upload signing key and its passwords. NEVER commit these. Losing the
+# keystore means resetting the upload key with Google before you can publish an
+# update, so back it up somewhere safe outside the repo.
+android/gigil-upload.keystore
+android/keystore.properties
+
 *.local
 .DS_Store
 .vscode/
+
+# Rebuildable Play upload artifact.
+android/gigil-release.aab
+android/app/build/outputs/
