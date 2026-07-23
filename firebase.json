@@ -27,6 +27,15 @@
         "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
       },
       {
+        "//": "The APK is stored extension-less at /dl/gigil so the Spark plan's executable filter doesn't reject the deploy; these headers hand the browser the real type and filename, so it saves as gigil.apk.",
+        "source": "/dl/gigil",
+        "headers": [
+          { "key": "Content-Type", "value": "application/vnd.android.package-archive" },
+          { "key": "Content-Disposition", "value": "attachment; filename=gigil.apk" },
+          { "key": "Cache-Control", "value": "public, max-age=3600" }
+        ]
+      },
+      {
         "source": "/favicon.svg",
         "headers": [{ "key": "Cache-Control", "value": "public, max-age=300" }]
       },
